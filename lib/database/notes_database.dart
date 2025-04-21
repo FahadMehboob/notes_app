@@ -8,7 +8,7 @@ class NotesDatabase {
 
   static Database? _database;
 
-  Future<Database> _initDB() async {
+  Future<Database> initDB() async {
     if (_database != null) return _database!;
 
     _database = await openDatabase(
@@ -18,18 +18,18 @@ class NotesDatabase {
 
         CREATE TABLE notes(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL
-        description TEXT NOT NULL
-        date TEXT NOT NULL
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        date TEXT NOT NULL,
         color INTEGER NOT NULL DEFAULT 0)
 '''),
     );
     return _database!;
   }
 
-  Future<int> _insertNote(
+  Future<int> insertNote(
       String title, String description, String date, int color) async {
-    final db = await instance._initDB();
+    final db = await instance.initDB();
 
     return await db.insert(
         'notes',
@@ -42,8 +42,8 @@ class NotesDatabase {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<Map<String, dynamic>>> _getNotes() async {
-    final db = await instance._initDB();
+  Future<List<Map<String, dynamic>>> getNotes() async {
+    final db = await instance.initDB();
 
     return await db.query(
       'notes',
@@ -51,9 +51,9 @@ class NotesDatabase {
     );
   }
 
-  Future<int> _updateNote(
+  Future<int> updateNote(
       String title, String description, String date, int color, int id) async {
-    final db = await instance._initDB();
+    final db = await instance.initDB();
 
     return await db.update(
         'notes',
@@ -68,8 +68,8 @@ class NotesDatabase {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<int> _deleteNote(int id) async {
-    final db = await instance._initDB();
+  Future<int> deleteNote(int id) async {
+    final db = await instance.initDB();
     return await db.delete('notes', where: 'id=?', whereArgs: [id]);
   }
 }
