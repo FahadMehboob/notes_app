@@ -23,6 +23,13 @@ class NotesDialog extends StatefulWidget {
 
 class _NotesDialogState extends State<NotesDialog> {
   late int selectedColorIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedColorIndex = widget.colorIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
     final titleController = TextEditingController(text: widget.title);
@@ -130,7 +137,12 @@ class _NotesDialogState extends State<NotesDialog> {
               final newTitle = titleController.text;
               final newDesc = descController.text;
               widget.onNoteSaved(
-                  newTitle, newDesc, selectedColorIndex, currentDate);
+                newTitle,
+                newDesc,
+                currentDate,
+                selectedColorIndex,
+              );
+              Navigator.pop(context);
             },
             child: const Text("Save"))
       ],
